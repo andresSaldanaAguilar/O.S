@@ -1,5 +1,4 @@
 segment .data
-
     prompt db "Ingrese cadena: "
     promptLen equ $-prompt
     prompt3 db 10, "Longitud de la cadena: "
@@ -26,7 +25,7 @@ eax2dec:                            ; Arg EDI: Pointer to string that gets ASCII
     .first_loop:
     xor edx, edx                    ; Attention: DIV applies also DX!
     div ebx                         ; DX:AX / BX = AX remainder: DX
-    push dx                         ; LIFO
+    push dx                         ; LIFO, 16 bits
     inc cl                          ; Increment number of digits
     test eax, eax                   ; AX = 0?
     jnz .first_loop                 ; No: once more
@@ -59,29 +58,18 @@ _start:
     int 80h
 
     mov esi, inputNum
-    mov [uNum], eax
+    mov [uNum], eax ;indice de la cadena
+    dec eax ;decrementamos la posicion del indice (-1)
 
-    xor edx, edx
-    mov eax, [uNum]
-    dec eax
-
-    ; loop in order to save the length of the string
-
-    mov ecx,promptLen    ;number of iterations (equal to the length of the string)
+            ; loop in order to know the length of the string
     l1:
-    push ecx             ;guardamos en stack el valor de ecx
     mov [uNum], ebx      ;la posicion en el string num es igual a eax
     inc ebx              ;increment counter
-    pop ecx              ;get back data
     loop l1
+            ; end of loop
 
-    ; end of loop
-
-    mov [uNum], eax
-    mov edi, num
-    call eax2dec         
-    mov [quotientLen], eax
-
+    mov edi, num ;guardamos en num el indice una vez que se termino la iteracion
+    call eax2dec
 
     mov eax, 4
     mov ebx, 1
@@ -92,7 +80,7 @@ _start:
     mov eax, 4
     mov ebx, 1
     mov ecx, num
-    mov edx, [quotientLen]
+    ;mov edx, quotientLen
     int 80h
 
     ;solo para que se vea mas prou :B
