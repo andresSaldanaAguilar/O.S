@@ -2,7 +2,6 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#include "pila.h"
 
 int main(int argc, char const *argv[]) {
 
