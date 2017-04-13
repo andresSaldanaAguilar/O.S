@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include<math.h>
+#include <time.h>
 #include "funcionesmtz.h"
 
 void Suma(int m1 [10][10],int m2 [10][10]);
@@ -19,6 +20,7 @@ void Transpuestainv(float [][25], float [][25], float);
 int main(int argc, char const *argv[]) {
   //variables y constantes para matriz inversa
   float k=10, d;
+  clock_t start_t, end_t;
 
   //matriz 1
   int m1 [10][10]={{0,1,2,3,3,2,1,0,1,2},
@@ -55,6 +57,7 @@ int main(int argc, char const *argv[]) {
                     {0,2,2,3,3,6,1,0,5,2},
                     {0,1,2,2,3,3,0,3,2,2}};
 
+  start_t = clock();
   //Realiza Suma
   printf("\nSuma de matrices:\n");
   Suma(m1,m2);
@@ -78,6 +81,10 @@ int main(int argc, char const *argv[]) {
    printf("\nLa inversa de la matriz no es posible.\n");
   else
    cofactor(a, k);
+
+  end_t = clock();
+  double t = (float)(end_t - start_t) / CLOCKS_PER_SEC;
+  printf("\nTiempo tomado por la CPU: %f\n", t);
 
   return 0;
 }
